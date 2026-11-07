@@ -32,7 +32,7 @@ Benutzerkonten werden dauerhaft in `data/rlp-rp.sqlite` gespeichert; starte das 
 4. Öffne dein öffentliches Roblox-Profil, füge den Code vorübergehend in die Profilbeschreibung („About“) ein und speichere die Änderungen.
 5. Kehre zum Portal zurück und wähle **Profil prüfen**. Bei Erfolg ist dein Roblox-Konto verbunden; Tickets sind ab dann freigeschaltet.
 
-Die Roblox-Anmeldung erfolgt ausschließlich über den Profilnachweis. Das Portal fragt weder das Roblox-Passwort noch Roblox-Cookies ab. Beim Testen ein eigenes Testkonto verwenden. Für lokal neu registrierte Nutzer gilt eine Passwortlänge von mindestens 12 Zeichen.
+Die Roblox-Anmeldung erfolgt ausschließlich über den Profilnachweis. Das Portal fragt weder das Roblox-Passwort noch Roblox-Cookies ab. Beim Testen ein eigenes Testkonto verwenden. Für neu registrierte Nutzer gilt eine Passwortlänge von mindestens 12 Zeichen. Die Registrierung und Anmeldung erfolgen mit Benutzername und Passwort; neue Konten benötigen keine E-Mail-Adresse. Ohne hinterlegte E-Mail kann ein vergessenes Passwort nicht automatisch zurückgesetzt werden.
 
 ### Entwicklungs-Administrator
 
@@ -47,12 +47,12 @@ In der Benutzerverwaltung kannst du Konten suchen und die komplette Liste einsch
 
 #### Eigenes Konto zum Admin machen
 
-1. Erstelle zuerst ein normales Konto mit deiner eigenen E-Mail-Adresse.
+1. Erstelle zuerst ein normales Konto mit deinem Benutzernamen und Passwort.
 2. Melde dich anschließend mit dem lokalen Superadmin (`admin@rlp-rp.local`) an und öffne **Admin → Benutzerverwaltung**.
 3. Suche dein Konto und stelle in der Spalte **Rolle** `ADMIN` ein.
 4. Melde dich ab und wieder mit deinem eigenen Konto an. Der Admin-Link erscheint nun in der Navigation.
 
-Nur ein Superadmin kann Rollen vergeben. Für einen frischen Produktivbetrieb werden `ADMIN_EMAIL` und `ADMIN_PASSWORD` beim ersten Start verwendet, um das Superadmin-Konto anzulegen. Diese geheimen Zugangsdaten nicht veröffentlichen; vorhandene Datenbanken behalten ihre bestehenden Konten.
+Nur ein Superadmin kann Rollen vergeben. Für einen frischen Produktivbetrieb werden `ADMIN_USERNAME` und `ADMIN_PASSWORD` beim ersten Start verwendet, um das Superadmin-Konto anzulegen. `ADMIN_EMAIL` ist optional. Diese geheimen Zugangsdaten nicht veröffentlichen; vorhandene Datenbanken behalten ihre bestehenden Konten.
 
 Im lokalen Entwicklungsmodus (`NODE_ENV` ist nicht `production`) erscheint im Admin-Dashboard außerdem ein Diagnose-Terminal. Erlaubte Befehle: `help`, `status`, `user`, `page`, `health`, `easteregg` und `clear`. Es führt absichtlich keinen frei eingegebenen JavaScript-Code aus und wird in Produktion ausgeblendet.
 
@@ -73,7 +73,7 @@ Der Prüfcode läuft nach 15 Minuten ab. Ohne Verifizierung bleiben Support-Tick
 
 ### Passwort und E-Mail
 
-Ein registriertes Konto bekommt derzeit keine Bestätigungs-E-Mail; die E-Mail-Adresse dient zur Anmeldung und zur Kontowiederherstellung. Passwort-Reset-E-Mails, Sicherheitsmeldungen an Admins und Abteilungsentscheidungen werden nur verschickt, wenn `SMTP_URL` und `MAIL_FROM` eingerichtet sind. Beim Start prüft das Portal die SMTP-Verbindung und zeigt den Zustand im Admin-Dashboard an. Lokal ohne SMTP erscheint der Passwort-Reset-Link im Server-Terminal; Sicherheitsmeldungen bleiben im Admin-Dashboard sichtbar.
+Neue Konten verwenden Benutzername und Passwort; eine E-Mail-Adresse ist optional und wird bei der Registrierung nicht abgefragt. Bestehende Konten können sich weiterhin mit ihrer bisherigen E-Mail-Adresse anmelden. Ohne E-Mail-Adresse gibt es keinen automatischen Passwort-Reset; bewahre dein Passwort sicher auf. E-Mail-Benachrichtigungen an Admins und Abteilungsentscheidungen benötigen `SMTP_URL` und `MAIL_FROM`. Lokal ohne SMTP erscheinen Reset-Links für ältere E-Mail-Konten im Server-Terminal; Sicherheitsmeldungen bleiben im Admin-Dashboard sichtbar.
 
 Für echten E-Mail-Versand müssen gültige SMTP-Zugangsdaten vom E-Mail-Anbieter als Umgebungsvariablen gesetzt werden. Zugangsdaten nicht in den Quellcode oder ins Git-Repository schreiben. Beispiel (Werte durch die Angaben deines Anbieters ersetzen):
 
@@ -117,6 +117,12 @@ Wichtige Umgebungsvariablen:
 | `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `ADMIN_USERNAME` | Erstmaliger Superadmin, falls noch kein Admin existiert |
 | `SMTP_URL` | SMTP-Verbindungs-URL für Passwort-Reset-, Sicherheits- und Dienst-E-Mails |
 | `MAIL_FROM` | Verifizierte Absenderadresse für E-Mails (in Produktion erforderlich, wenn SMTP genutzt wird) |
+
+### Kostenloses Online-Hosting
+
+Der GitHub-Actions-Workflow führt bei Pushes auf `main` den Konto-/Datenbanktest aus und veröffentlicht danach die Dateien aus `public` als **statische Design-Vorschau** auf [GitHub Pages](https://tulixpro.github.io/notrufHamburgTulix/). Aktiviere dafür im Repository unter **Settings → Pages → Build and deployment → Source** die Option **GitHub Actions**. Die Vorschau zeigt deutlich an, dass Anmeldung, Registrierung, Tickets und Admin-Funktionen dort deaktiviert sind.
+
+GitHub Pages führt diesen Express-Server nicht aus. Die vollständige Website benötigt weiterhin einen Backend-Host und eine gehostete Datenbank; die lokale SQLite-Datei wird nicht in die Vorschau hochgeladen.
 | `PUBLIC_URL` | Öffentliche HTTPS-Basisadresse (z. B. `https://portal.de`) für Reset-Links in Produktion |
 | `ROBLOX_PLACE_ID` | Place-ID des RLP-RP-Spiels; erstellt den direkten Spiel-Link |
 | `ROBLOX_UNIVERSE_ID` | Universe-ID für die Live-Abfrage von Spielstatus und Spielerzahlen |

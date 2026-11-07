@@ -82,7 +82,7 @@ function updateHeader() {
 function renderProfile() {
   if (!state.user) return;
   $("#profile-heading").textContent = state.user.username;
-  $("#profile-email").textContent = state.user.email;
+  $("#profile-email").textContent = state.user.email || "Kein E-Mail-Konto hinterlegt";
   $("#profile-role").textContent = roleNames[state.user.role] || "MITGLIED";
   $("#profile-admin-link").classList.toggle("hidden", !["admin", "superadmin"].includes(state.user.role));
   $("#profile-name").value = state.user.username;
@@ -346,7 +346,7 @@ async function loadAdmin() {
       row.dataset.search = [user.username, user.email, user.roblox_username, roleNames[user.role] || user.role]
         .filter(Boolean).join(" ").toLocaleLowerCase("de");
       const name = document.createElement("td"); name.className = "user-cell"; name.textContent = user.username;
-      const email = document.createElement("td"); email.textContent = user.email;
+      const email = document.createElement("td"); email.textContent = user.email || "—";
       const robloxCell = document.createElement("td");
       if (user.roblox_verified_at) {
         const accountLink = document.createElement("a");
@@ -605,14 +605,14 @@ $$(".back-login").forEach(button => button.addEventListener("click", () => showA
 $("#login-form").addEventListener("submit", async event => {
   event.preventDefault();
   try {
-    const data = await api("/api/auth/login", { method: "POST", body: JSON.stringify({ email: $("#login-email").value, password: $("#login-password").value }) });
+    const data = await api("/api/auth/login", { method: "POST", body: JSON.stringify({ username: $("#login-username").value, password: $("#login-password").value }) });
     await refreshCsrf(); setUser(data.user); toast("Willkommen zurück!"); history.pushState(null, "", "#home"); showPage("home");
   } catch (error) { setFormMessage($("#auth-message"), error.message, true); }
 });
 $("#register-form").addEventListener("submit", async event => {
   event.preventDefault();
   try {
-    const data = await api("/api/auth/register", { method: "POST", body: JSON.stringify({ username: $("#register-name").value, email: $("#register-email").value, password: $("#register-password").value }) });
+    const data = await api("/api/auth/register", { method: "POST", body: JSON.stringify({ username: $("#register-name").value, password: $("#register-password").value }) });
     await refreshCsrf(); setUser(data.user); toast("Konto erstellt – verifiziere jetzt dein Roblox-Konto."); history.pushState(null, "", "#profile"); showPage("profile");
   } catch (error) { setFormMessage($("#auth-message"), error.message, true); }
 });
@@ -882,8 +882,27 @@ $("#emergency-button").addEventListener("click", async () => {
 
 async function initialize() {
   $("#year").textContent = new Date().getFullYear();
+  if (location.hostname.endsWith(".github.io")) {
+    $("#github-preview-banner").classList.remove("hidden");
+    $("#account-button").disabled = true;
+    $("#account-button").title = "In der statischen GitHub-Vorschau nicht verfügbar.";
+    $("#install-app-home").disabled = true;
+    $("#app-install-button").disabled = true;
+    $$("form button[type='submit']").forEach(button => { button.disabled = true; });
+    $("#server-status").textContent = "Statische Vorschau";
+    $("#players-online").textContent = "—";
+    $("#players-capacity").textContent = "—";
+    state.news = [{
+      title: "Willkommen bei RLP RP",
+      body: "Dies ist eine statische Design-Vorschau. Für echte Konten, Tickets und News muss der Server online sein.",
+      created_at: new Date().toISOString()
+    }];
+    renderNews();
+    navigate();
+    return;
+  }
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/sw.js").catch(error => {
+    navigator.serviceWorker.register("sw.js").catch(error => {
       console.error("Offline-Unterstützung konnte nicht aktiviert werden.", error);
     });
   }

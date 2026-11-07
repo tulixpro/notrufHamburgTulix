@@ -1,4 +1,4 @@
-const CACHE_NAME = "rlp-rp-shell-v4";
+const CACHE_NAME = "rlp-rp-shell-v5";
 const APP_SHELL = ["/", "/styles.css", "/app.js", "/manifest.webmanifest", "/icon.svg", "/icon-192.png", "/icon-512.png"];
 
 self.addEventListener("install", event => {

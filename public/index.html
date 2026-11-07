@@ -10,18 +10,18 @@
   <title>RLP RP — Roblox Roleplay</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="manifest" href="/manifest.webmanifest">
-  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css">
-  <script src="/app.js" defer></script>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
 </head>
 <body>
   <div class="ambient ambient-one"></div>
   <div class="ambient ambient-two"></div>
   <header class="site-header">
     <a class="brand" href="#home" aria-label="RLP RP Startseite">
-      <img class="brand-mark" src="/icon.svg" alt="">
+      <img class="brand-mark" src="icon.svg" alt="">
       <span class="brand-name">RLP <b>RP</b><small>ROBLOX ROLEPLAY</small></span>
     </a>
     <button class="mobile-menu" id="mobile-menu" aria-label="Navigation öffnen" aria-expanded="false"><span></span><span></span></button>
@@ -42,6 +42,7 @@
     </div>
   </header>
 
+  <aside class="announcement-bar github-preview-banner hidden" id="github-preview-banner" role="status"><span class="announcement-mark">ℹ</span><p>GitHub-Vorschau: Hier kannst du das Design ansehen. Registrierung, Tickets und Admin-Funktionen brauchen den Server und sind in dieser Vorschau deaktiviert.</p></aside>
   <aside class="announcement-bar hidden" id="announcement-bar" aria-live="polite"><span class="announcement-mark">✦</span><p id="announcement-text"></p><button id="dismiss-announcement" type="button" aria-label="Hinweis schließen">×</button></aside>
   <main>
     <section class="page active" id="page-home">
@@ -123,9 +124,9 @@
         <div class="auth-aside"><span class="eyebrow">SCHÖN, DASS DU DA BIST</span><h1>Deine Story<br>geht <span>weiter.</span></h1><p>Melde dich an, verwalte deine Tickets und bleib mit RLP RP verbunden.</p><div class="auth-mini-card"><span class="mini-mark">R·</span><span><b>RLP RP Portal</b><small>Dein Zuhause außerhalb des Servers.</small></span></div></div>
         <div class="panel auth-panel">
           <div class="auth-tabs"><button class="auth-tab active" data-auth="login">Anmelden</button><button class="auth-tab" data-auth="register">Konto erstellen</button></div>
-          <form id="login-form" class="auth-form"><h2>Willkommen zurück.</h2><p>Schön, dich wiederzusehen.</p><label for="login-email">E-Mail-Adresse</label><input id="login-email" type="email" autocomplete="email" placeholder="du@beispiel.de" required><label for="login-password">Passwort</label><input id="login-password" type="password" autocomplete="current-password" placeholder="Dein Passwort" required><button class="text-button forgot-button" type="button" id="forgot-button">Passwort vergessen?</button><button class="button button-primary form-submit" type="submit">Anmelden <span>→</span></button></form>
-          <form id="register-form" class="auth-form hidden"><h2>Finde deinen Platz.</h2><p>Erstelle dein RLP RP Konto.</p><label for="register-name">Benutzername</label><input id="register-name" autocomplete="username" minlength="3" maxlength="24" placeholder="Dein Name" required><label for="register-email">E-Mail-Adresse</label><input id="register-email" type="email" autocomplete="email" placeholder="du@beispiel.de" required><label for="register-password">Passwort <small>(mind. 12 Zeichen)</small></label><input id="register-password" type="password" autocomplete="new-password" minlength="12" placeholder="Mindestens 12 Zeichen" required><button class="button button-primary form-submit" type="submit">Konto erstellen <span>→</span></button></form>
-          <form id="forgot-form" class="auth-form hidden"><button class="text-button back-login" type="button">← Zurück zur Anmeldung</button><h2>Passwort zurücksetzen.</h2><p>Wir senden dir einen Link, falls ein Konto zu dieser Adresse existiert.</p><label for="forgot-email">E-Mail-Adresse</label><input id="forgot-email" type="email" required placeholder="du@beispiel.de"><button class="button button-primary form-submit" type="submit">Link anfordern <span>→</span></button></form>
+          <form id="login-form" class="auth-form"><h2>Willkommen zurück.</h2><p>Schön, dich wiederzusehen.</p><label for="login-username">Benutzername</label><input id="login-username" autocomplete="username" placeholder="Dein Benutzername" required><label for="login-password">Passwort</label><input id="login-password" type="password" autocomplete="current-password" placeholder="Dein Passwort" required><button class="text-button forgot-button" type="button" id="forgot-button">Passwort vergessen?</button><button class="button button-primary form-submit" type="submit">Anmelden <span>→</span></button></form>
+          <form id="register-form" class="auth-form hidden"><h2>Finde deinen Platz.</h2><p>Erstelle dein RLP RP Konto – nur mit Benutzername und Passwort.</p><label for="register-name">Benutzername</label><input id="register-name" autocomplete="username" minlength="3" maxlength="24" placeholder="Dein Name" required><label for="register-password">Passwort <small>(mind. 12 Zeichen)</small></label><input id="register-password" type="password" autocomplete="new-password" minlength="12" placeholder="Mindestens 12 Zeichen" required><button class="button button-primary form-submit" type="submit">Konto erstellen <span>→</span></button></form>
+          <form id="forgot-form" class="auth-form hidden"><button class="text-button back-login" type="button">← Zurück zur Anmeldung</button><h2>Passwort zurücksetzen.</h2><p>Ein Zurücksetzen per E-Mail ist für neue Konten nicht möglich. Wenn du dein Passwort vergessen hast, wende dich an das RLP-RP-Team.</p><label for="forgot-email">E-Mail-Adresse eines älteren Kontos</label><input id="forgot-email" type="email" required placeholder="du@beispiel.de"><button class="button button-primary form-submit" type="submit">Link anfordern <span>→</span></button></form>
           <form id="reset-form" class="auth-form hidden"><h2>Neues Passwort.</h2><p>Lege ein neues Passwort für dein Konto fest.</p><label for="reset-password">Neues Passwort <small>(mind. 12 Zeichen)</small></label><input id="reset-password" type="password" minlength="12" required><button class="button button-primary form-submit" type="submit">Passwort speichern <span>→</span></button></form>
           <div class="form-message hidden" id="auth-message" role="status"></div>
         </div>
@@ -162,7 +163,7 @@
     </section>
   </main>
 
-  <footer class="site-footer"><div class="wrap footer-top"><a class="brand" href="#home"><img class="brand-mark" src="/icon.svg" alt=""><span class="brand-name">RLP <b>RP</b><small>ROBLOX ROLEPLAY</small></span></a><p>Deine Geschichte. Deine Roblox-Welt.</p><div class="footer-actions"><a href="https://discord.gg/" target="_blank" rel="noreferrer">Discord Community ↗</a><button class="text-button" id="app-install-button" type="button">Als App installieren ↓</button></div></div><div class="wrap footer-bottom"><span>© <span id="year"></span> RLP RP. Mit Herz auf Roblox.</span><span>Ein Ort für gute Geschichten.</span></div></footer>
+  <footer class="site-footer"><div class="wrap footer-top"><a class="brand" href="#home"><img class="brand-mark" src="icon.svg" alt=""><span class="brand-name">RLP <b>RP</b><small>ROBLOX ROLEPLAY</small></span></a><p>Deine Geschichte. Deine Roblox-Welt.</p><div class="footer-actions"><a href="https://discord.gg/" target="_blank" rel="noreferrer">Discord Community ↗</a><button class="text-button" id="app-install-button" type="button">Als App installieren ↓</button></div></div><div class="wrap footer-bottom"><span>© <span id="year"></span> RLP RP. Mit Herz auf Roblox.</span><span>Ein Ort für gute Geschichten.</span></div></footer>
   <div class="toast-region" id="toast-region" aria-live="polite"></div>
   <button class="easter-egg-toggle hidden" id="easter-egg-toggle" type="button" aria-pressed="false">✦ Nachtmodus freigeschaltet</button>
   <dialog class="install-dialog" id="install-dialog"><div class="dialog-heading"><div><span class="eyebrow">RLP RP ÜBERALL</span><h2>App installieren</h2></div><button class="close-dialog" id="close-install-dialog" aria-label="Schließen">×</button></div><p>Wähle dein Gerät. Die App wird direkt aus dem Browser installiert – ohne unbekannte EXE- oder APK-Dateien.</p><div class="install-options"><button class="button button-outline" type="button" data-install-platform="android">Android</button><button class="button button-outline" type="button" data-install-platform="windows">Windows 10 / 11</button></div><div class="install-help hidden" id="install-help" role="status"></div></dialog>

@@ -56,7 +56,7 @@ if (mailTransport) {
       console.error("SMTP-Verbindung konnte nicht geprüft werden.", error);
     });
 }
-const dataDirectory = path.join(__dirname, "data");
+const dataDirectory = process.env.DATA_DIRECTORY || path.join(__dirname, "data");
 require("node:fs").mkdirSync(dataDirectory, { recursive: true });
 const db = new Database(path.join(dataDirectory, "rlp-rp.sqlite"));
 db.pragma("journal_mode = WAL");
@@ -174,7 +174,17 @@ const departments = {
   fire: { label: "Feuerwehr", prefix: "FW" },
   ems: { label: "Rettungsdienst", prefix: "RD" }
 };
-const accountProjection = "id,username,email,role,avatar,roblox_user_id,roblox_username,roblox_verified_at,created_at";
+const internalEmailSuffix = "@accounts.rlp-rp.invalid";
+const accountProjection = `id,username,CASE WHEN email LIKE '%${internalEmailSuffix}' THEN NULL ELSE email END AS email,
+  role,avatar,roblox_user_id,roblox_username,roblox_verified_at,created_at`;
+
+function createInternalEmail() {
+  return `no-email+${crypto.randomBytes(16).toString("hex")}${internalEmailSuffix}`;
+}
+
+function hasContactEmail(email) {
+  return typeof email === "string" && email.includes("@") && !email.endsWith(internalEmailSuffix);
+}
 
 function getSetting(key, fallback = "") {
   return db.prepare("SELECT value FROM settings WHERE key=?").get(key)?.value ?? fallback;
@@ -192,7 +202,8 @@ function hashSecurityValue(value) {
 function notifyAdmins(title, details) {
   db.prepare("INSERT INTO security_alerts(title,details) VALUES(?,?)").run(title, details);
   if (!mailTransport) return;
-  const recipients = db.prepare("SELECT email FROM users WHERE role IN ('admin','superadmin')").all().map(row => row.email);
+  const recipients = db.prepare("SELECT email FROM users WHERE role IN ('admin','superadmin') AND email NOT LIKE ?")
+    .all(`%${internalEmailSuffix}`).map(row => row.email);
   if (!recipients.length) return;
   mailTransport.sendMail({
     from: process.env.MAIL_FROM || "RLP RP <noreply@rlp-rp.local>",
@@ -250,19 +261,21 @@ function seedData() {
     insertNews.run("Unser nächstes Community-Event", "Schau regelmäßig vorbei – bald gibt es neue gemeinsame Events und spannende Geschichten in RLP RP.", null);
   }
   if (!db.prepare("SELECT id FROM users WHERE role IN ('admin','superadmin') LIMIT 1").get()) {
-    const email = process.env.ADMIN_EMAIL || (production ? "" : "admin@rlp-rp.local");
+    const email = process.env.ADMIN_EMAIL || (production
+      ? (process.env.ADMIN_USERNAME ? createInternalEmail() : "")
+      : "admin@rlp-rp.local");
     const password = process.env.ADMIN_PASSWORD || (production ? "" : "RLP-RP-Demo-2026!");
-    if (email && password.length >= 12) {
+    if (email && password.length >= 12 && (!production || process.env.ADMIN_EMAIL || process.env.ADMIN_USERNAME)) {
       const username = process.env.ADMIN_USERNAME || "RLPAdmin";
       const hash = bcrypt.hashSync(password, 12);
       const result = db.prepare("INSERT OR IGNORE INTO users(username,email,password_hash,role) VALUES(?,?,?,'superadmin')")
         .run(username, email.toLowerCase(), hash);
-      if (result.changes) console.log(`Administrator angelegt: ${email}${production ? "" : " (Demo-Passwort siehe README)"}`);
+      if (result.changes) console.log(`Administrator angelegt: ${process.env.ADMIN_EMAIL || username}${production ? "" : " (Demo-Passwort siehe README)"}`);
       else if (!db.prepare("SELECT id FROM users WHERE role IN ('admin','superadmin') LIMIT 1").get()) {
         throw new Error("Admin konnte nicht angelegt werden. ADMIN_EMAIL oder ADMIN_USERNAME wird bereits verwendet.");
       }
     } else if (production) {
-      console.warn("Kein Admin angelegt. Setze ADMIN_EMAIL und ADMIN_PASSWORD (mindestens 12 Zeichen).");
+      console.warn("Kein Admin angelegt. Setze ADMIN_USERNAME und ADMIN_PASSWORD (mindestens 12 Zeichen); ADMIN_EMAIL ist optional.");
     }
   }
 }
@@ -437,38 +450,40 @@ app.get("/api/status", async (req, res, next) => {
 app.get("/api/auth/me", (req, res) => res.json({ user: req.user || null }));
 
 app.post("/api/auth/register", (req, res) => {
-  const { username, email, password } = req.body || {};
+  const { username, password } = req.body || {};
   if (!validateText(username, 24, 3) || !/^[\p{L}\p{N}_-]+$/u.test(username.trim())) {
     return res.status(400).json({ error: "Der Benutzername muss 3–24 Zeichen lang sein und darf Buchstaben, Zahlen, _ oder - enthalten." });
   }
-  if (!validateText(email, 254) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ error: "Bitte gib eine gültige E-Mail-Adresse ein." });
   if (!validateText(password, 128, 12)) return res.status(400).json({ error: "Dein Passwort muss mindestens 12 Zeichen lang sein." });
   try {
     const result = db.prepare("INSERT INTO users(username,email,password_hash) VALUES(?,?,?)")
-      .run(username.trim(), email.trim().toLowerCase(), bcrypt.hashSync(password, 12));
+      .run(username.trim(), createInternalEmail(), bcrypt.hashSync(password, 12));
     logAction(result.lastInsertRowid, "user.register", username.trim());
     const user = db.prepare(`SELECT ${accountProjection} FROM users WHERE id=?`).get(result.lastInsertRowid);
     const token = jwt.sign({ ver: 0 }, signingSecret, { subject: String(user.id), expiresIn: "12h", issuer: "rlp-rp" });
     res.cookie("rlp_session", token, { httpOnly: true, secure: production, sameSite: "strict", maxAge: 12 * 60 * 60 * 1000, path: "/" });
     res.status(201).json({ user });
   } catch (error) {
-    if (error.code === "SQLITE_CONSTRAINT_UNIQUE") return res.status(409).json({ error: "Benutzername oder E-Mail-Adresse wird bereits verwendet." });
+    if (error.code === "SQLITE_CONSTRAINT_UNIQUE") return res.status(409).json({ error: "Dieser Benutzername wird bereits verwendet." });
     throw error;
   }
 });
 
 app.post("/api/auth/login", (req, res) => {
-  const { email, password } = req.body || {};
-  if (!validateText(email, 254) || typeof password !== "string" || password.length > 128) return res.status(400).json({ error: "Bitte prüfe deine Anmeldedaten." });
-  const userRow = db.prepare("SELECT * FROM users WHERE email = ?").get(email.trim().toLowerCase());
+  const { username, email, password } = req.body || {};
+  const identifier = typeof username === "string" ? username : email;
+  if (!validateText(identifier, 254) || typeof password !== "string" || password.length > 128) return res.status(400).json({ error: "Bitte prüfe deine Anmeldedaten." });
+  const normalizedIdentifier = identifier.trim();
+  const userRow = db.prepare("SELECT * FROM users WHERE username = ? COLLATE NOCASE OR email = ? COLLATE NOCASE")
+    .get(normalizedIdentifier, normalizedIdentifier.toLowerCase());
   if (!userRow || !bcrypt.compareSync(password, userRow.password_hash)) {
-    recordFailedLogin(email.trim().toLowerCase(), req.ip || req.socket.remoteAddress || "unknown");
-    return res.status(401).json({ error: "E-Mail-Adresse oder Passwort ist falsch." });
+    recordFailedLogin(normalizedIdentifier, req.ip || req.socket.remoteAddress || "unknown");
+    return res.status(401).json({ error: "Benutzername oder Passwort ist falsch." });
   }
   const user = db.prepare(`SELECT ${accountProjection} FROM users WHERE id=?`).get(userRow.id);
   const token = jwt.sign({ ver: userRow.session_version || 0 }, signingSecret, { subject: String(user.id), expiresIn: "12h", issuer: "rlp-rp" });
   res.cookie("rlp_session", token, { httpOnly: true, secure: production, sameSite: "strict", maxAge: 12 * 60 * 60 * 1000, path: "/" });
-  const fingerprint = hashSecurityValue(`${email.trim().toLowerCase()}|${req.ip || req.socket.remoteAddress || "unknown"}`);
+  const fingerprint = hashSecurityValue(`${normalizedIdentifier.toLowerCase()}|${req.ip || req.socket.remoteAddress || "unknown"}`);
   db.prepare("DELETE FROM security_login_attempts WHERE fingerprint=?").run(fingerprint);
   if (["admin", "superadmin"].includes(user.role)) trackAdminLogin(user.id, req.ip || req.socket.remoteAddress || "unknown");
   logAction(user.id, "user.login");
@@ -764,12 +779,17 @@ app.patch("/api/admin/security-alerts/:id/read", requireAdmin, (req, res) => {
   res.json({ ok: true });
 });
 app.get("/api/admin/users", requireAdmin, (req, res) => {
-  res.json({ users: db.prepare("SELECT id,username,email,role,roblox_user_id,roblox_username,roblox_verified_at,created_at FROM users ORDER BY id DESC LIMIT 200").all() });
+  res.json({ users: db.prepare(`SELECT id,username,
+    CASE WHEN email LIKE ? THEN NULL ELSE email END AS email,
+    role,roblox_user_id,roblox_username,roblox_verified_at,created_at
+    FROM users ORDER BY id DESC LIMIT 200`).all(`%${internalEmailSuffix}`) });
 });
 app.get("/api/admin/users/export.csv", requireAdmin, (req, res) => {
-  const users = db.prepare(`SELECT u.id,u.username,u.email,u.role,u.roblox_username,u.roblox_verified_at,u.created_at,
+  const users = db.prepare(`SELECT u.id,u.username,
+      CASE WHEN u.email LIKE ? THEN NULL ELSE u.email END AS email,
+      u.role,u.roblox_username,u.roblox_verified_at,u.created_at,
       s.department,s.service_number,s.status AS service_status
-    FROM users u LEFT JOIN service_assignments s ON s.user_id=u.id ORDER BY u.id DESC`).all();
+    FROM users u LEFT JOIN service_assignments s ON s.user_id=u.id ORDER BY u.id DESC`).all(`%${internalEmailSuffix}`);
   const csvCell = value => {
     const text = String(value ?? "");
     const safeText = /^[\t\r ]*[=+\-@]/.test(text) ? `'${text}` : text;
@@ -792,9 +812,9 @@ app.get("/api/admin/users/export.csv", requireAdmin, (req, res) => {
 app.get("/api/admin/departments", requireAdmin, (req, res) => {
   res.json({
     assignments: db.prepare(`SELECT s.user_id,s.department,s.service_number,s.status,s.requested_at,s.updated_at,
-      u.username,u.email,u.roblox_username FROM service_assignments s
+      u.username,CASE WHEN u.email LIKE ? THEN NULL ELSE u.email END AS email,u.roblox_username FROM service_assignments s
       JOIN users u ON u.id=s.user_id ORDER BY CASE s.status WHEN 'pending' THEN 0 WHEN 'active' THEN 1 ELSE 2 END,
-      s.requested_at DESC LIMIT 200`).all()
+      s.requested_at DESC LIMIT 200`).all(`%${internalEmailSuffix}`)
   });
 });
 app.patch("/api/admin/departments/:userId", requireAdmin, (req, res) => {
@@ -808,7 +828,7 @@ app.patch("/api/admin/departments/:userId", requireAdmin, (req, res) => {
   db.prepare("UPDATE service_assignments SET status=?,updated_at=CURRENT_TIMESTAMP WHERE user_id=?")
     .run(status, userId);
   logAction(req.user.id, `department.application_${status}`, `${assignment.username} · ${assignment.service_number}`);
-  if (mailTransport) {
+  if (mailTransport && hasContactEmail(assignment.email)) {
     const departmentName = departments[assignment.department].label;
     mailTransport.sendMail({
       from: process.env.MAIL_FROM || "RLP RP <noreply@rlp-rp.local>",
