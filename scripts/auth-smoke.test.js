@@ -8,6 +8,16 @@ const path = require("node:path");
 const { after, before, test } = require("node:test");
 
 const root = path.resolve(__dirname, "..");
+const usePostgres = process.env.RLP_TEST_POSTGRES === "1";
+if (usePostgres) {
+  require("dotenv").config({ path: path.join(root, ".env.local"), quiet: true });
+  if (!process.env.DATABASE_URL) throw new Error("RLP_TEST_POSTGRES=1 requires DATABASE_URL.");
+  const { secureConnectionString } = require("../database");
+  process.env.DATABASE_URL = secureConnectionString(process.env.DATABASE_URL);
+  if (process.env.DATABASE_URL_UNPOOLED) {
+    process.env.DATABASE_URL_UNPOOLED = secureConnectionString(process.env.DATABASE_URL_UNPOOLED);
+  }
+}
 const dataDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "rlp-rp-auth-test-"));
 const username = `test_${require("node:crypto").randomBytes(8).toString("hex")}`;
 const password = "Smoke-Test-Password-26!";
@@ -59,9 +69,9 @@ async function refreshCsrf() {
   assert.ok(csrfToken);
 }
 
-async function sendJson(endpoint, body) {
+async function sendJson(endpoint, body, method = "POST") {
   return request(endpoint, {
-    method: "POST",
+    method,
     headers: {
       "Content-Type": "application/json",
       "X-CSRF-Token": csrfToken
@@ -76,9 +86,11 @@ async function startServer() {
     cwd: root,
     env: {
       ...process.env,
-      NODE_ENV: "test",
+      NODE_ENV: usePostgres ? "production" : "test",
       PORT: String(port),
       DATA_DIRECTORY: dataDirectory,
+      DATABASE_URL: usePostgres ? process.env.DATABASE_URL : "",
+      DATABASE_URL_UNPOOLED: usePostgres ? (process.env.DATABASE_URL_UNPOOLED || "") : "",
       JWT_SECRET: require("node:crypto").randomBytes(48).toString("hex")
     },
     stdio: ["ignore", "pipe", "pipe"]
@@ -123,6 +135,29 @@ before(async () => {
 
 after(async () => {
   await stopServer();
+  if (usePostgres) {
+    const { Pool } = require("pg");
+    const pool = new Pool({ connectionString: process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL });
+    const client = await pool.connect();
+    try {
+      await client.query("BEGIN");
+      const user = await client.query("SELECT id FROM users WHERE username=$1", [username]);
+      if (user.rows[0]) {
+        await client.query("DELETE FROM ticket_messages WHERE ticket_id IN (SELECT id FROM tickets WHERE user_id=$1)", [user.rows[0].id]);
+        await client.query("DELETE FROM tickets WHERE user_id=$1", [user.rows[0].id]);
+        await client.query("DELETE FROM service_assignments WHERE user_id=$1", [user.rows[0].id]);
+        await client.query("DELETE FROM logs WHERE actor_id=$1", [user.rows[0].id]);
+        await client.query("DELETE FROM users WHERE id=$1", [user.rows[0].id]);
+      }
+      await client.query("COMMIT");
+    } catch (error) {
+      await client.query("ROLLBACK");
+      throw error;
+    } finally {
+      client.release();
+      await pool.end();
+    }
+  }
   fs.rmSync(dataDirectory, { recursive: true, force: true });
 });
 
@@ -153,4 +188,38 @@ test("registers without email, persists the account, and logs in by username aft
   const loginBody = await login.json();
   assert.equal(login.status, 200, JSON.stringify(loginBody));
   assert.equal(loginBody.user.username, username);
+
+  const news = await request("/api/news");
+  assert.equal(news.status, 200);
+  assert.ok(Array.isArray((await news.json()).news));
+  const status = await request("/api/status");
+  assert.equal(status.status, 200);
+  assert.equal(typeof (await status.json()).maintenance, "boolean");
+
+  if (usePostgres) {
+    const { Pool } = require("pg");
+    const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+    try {
+      await pool.query("UPDATE users SET role='support' WHERE username=$1", [username]);
+    } finally {
+      await pool.end();
+    }
+
+    await refreshCsrf();
+    const creation = await sendJson("/api/tickets", {
+      category: "Support",
+      title: "Neon smoke test",
+      body: "Temporary database integration test."
+    });
+    const creationBody = await creation.json();
+    assert.equal(creation.status, 201, JSON.stringify(creationBody));
+    const ticketId = creationBody.ticket.id;
+
+    const messages = await request(`/api/tickets/${ticketId}/messages`);
+    assert.equal(messages.status, 200);
+    assert.equal((await messages.json()).messages.length, 1);
+    await refreshCsrf();
+    const close = await sendJson(`/api/tickets/${ticketId}`, { status: "closed" }, "PATCH");
+    assert.equal(close.status, 200);
+  }
 });

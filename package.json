@@ -7,20 +7,25 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
+    "build": "node --check server.js && node --check database.js && node --check schema.js && node --check public/app.js && node --check scripts/auth-smoke.test.js && node --check scripts/database.test.js",
     "test": "node --test"
   },
   "engines": {
     "node": "22.x"
   },
   "dependencies": {
+    "@neon/config": "^1.13.0",
+    "@neon/env": "^2.1.0",
     "bcryptjs": "^2.4.3",
     "better-sqlite3": "^11.8.1",
     "cookie-parser": "^1.4.7",
     "csrf-csrf": "^4.0.3",
+    "dotenv": "^18.0.9",
     "express": "^4.21.2",
     "express-rate-limit": "^7.5.0",
     "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
-    "nodemailer": "^6.10.0"
+    "nodemailer": "^6.10.0",
+    "pg": "^8.23.1"
   }
 }

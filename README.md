@@ -1,6 +1,8 @@
 # RLP RP – Roblox Roleplay Portal
 
-Responsives Community- und Supportportal für das deutsche Roblox-Rollenspiel RLP RP. Das Projekt verwendet HTML, CSS und JavaScript im Frontend sowie Node.js, Express und SQLite im Backend.
+Responsives Community- und Supportportal für das deutsche Roblox-Rollenspiel RLP RP. Das Projekt verwendet HTML, CSS und JavaScript im Frontend sowie Node.js und Express. Lokal ohne `DATABASE_URL` wird SQLite verwendet; mit Neon-Umgebungsvariablen läuft das Backend auf PostgreSQL.
+
+Für den aktuellen Projektstand, die vollständige Schritt-für-Schritt-Anleitung zum Onlinebetrieb und eine Übergabe an zukünftige Bearbeiter siehe [WEITERARBEIT.md](./WEITERARBEIT.md).
 
 ## Voraussetzungen
 
@@ -14,7 +16,7 @@ npm install
 npm start
 ```
 
-Öffne anschließend [http://localhost:3000](http://localhost:3000). Die SQLite-Datenbank und alle Tabellen werden beim ersten Start automatisch unter `data/rlp-rp.sqlite` angelegt. Beispiel-News werden ebenfalls automatisch hinzugefügt.
+Öffne anschließend [http://localhost:3000](http://localhost:3000). Ohne `DATABASE_URL` wird die SQLite-Datenbank beim ersten Start automatisch unter `data/rlp-rp.sqlite` angelegt. Mit `DATABASE_URL` verbindet sich die App mit PostgreSQL und erstellt bzw. aktualisiert ihr Schema beim Start. Beispiel-News werden bei einer leeren Datenbank automatisch hinzugefügt.
 
 **Wichtig unter Windows:** Das Projekt benötigt Node.js 22.x, weil die SQLite-Abhängigkeit ein natives Modul verwendet. Prüfe die Version mit `node --version`. Falls Node 26 installiert ist, kannst du zum Starten einmalig Node 22 über npm verwenden:
 
@@ -22,7 +24,17 @@ npm start
 npm exec --yes --package=node@22 -- npm start
 ```
 
-Benutzerkonten werden dauerhaft in `data/rlp-rp.sqlite` gespeichert; starte das Portal immer aus demselben Projektordner. Die Datenbank liegt absichtlich in `.gitignore` und wird nicht in Git hochgeladen. Lösche den Ordner `data` nicht, wenn du deine Konten behalten möchtest.
+Benutzerkonten bleiben in der jeweils ausgewählten Datenbank gespeichert. Die bestehende lokale SQLite-Datei wird beim Wechsel zu Neon nicht automatisch kopiert oder gelöscht. Sichere und migriere vorhandene Daten separat, bevor du Neon als produktive Datenbank verwendest. Verbindungs-URLs und lokale Datenbankdateien werden nicht in Git hochgeladen.
+
+### Neon verwenden
+
+Die Neon-Verbindung ist lokal in `.env.local` hinterlegt und wird beim Serverstart automatisch geladen. Die Anwendung verwendet die gepoolte `DATABASE_URL`; Schemaänderungen nutzen `DATABASE_URL_UNPOOLED` (direkte Verbindung). Beide Variablen werden von der Neon-Konfiguration bereitgestellt und dürfen nicht veröffentlicht oder eingecheckt werden. Auf einem Hosting-Anbieter müssen sie als geheime Umgebungsvariablen eingetragen werden.
+
+Das Portal erstellt die Tabellen und den initialen Wartungsstatus automatisch. Für den ersten Produktivstart müssen außerdem `NODE_ENV=production`, `JWT_SECRET`, `ADMIN_USERNAME` und `ADMIN_PASSWORD` als Umgebungsvariablen gesetzt sein. `ADMIN_EMAIL` ist optional. Ein bestehender lokaler SQLite-Administrator wird nicht nach Neon übertragen.
+
+Für einen End-to-End-Test gegen Neon kannst du in PowerShell `$env:RLP_TEST_POSTGRES = "1"; npm test` ausführen. Dafür werden die URLs aus `.env.local` verwendet. Der Test legt ein zufällig benanntes Testkonto an und löscht es sowie seine Tickets und Aktionslogs danach wieder. Ohne diese Variable verwendet `npm test` eine isolierte temporäre SQLite-Datenbank und benötigt keine Neon-Zugangsdaten.
+
+`npm run build` prüft die Syntax der Server-, Datenbank-, Schema- und Frontend-JavaScriptdateien. Das Projekt benötigt keinen separaten Bundler.
 
 ### Lokal ausprobieren
 
@@ -36,19 +48,19 @@ Die Roblox-Anmeldung erfolgt ausschließlich über den Profilnachweis. Das Porta
 
 ### Entwicklungs-Administrator
 
-Im lokalen Entwicklungsmodus wird beim ersten Start ein Superadmin angelegt:
+Im lokalen Entwicklungsmodus mit SQLite wird beim ersten Start ein Superadmin angelegt:
 
 - E-Mail: `admin@rlp-rp.local`
 - Passwort: `RLP-RP-Demo-2026!`
 
-Ändere das Passwort nach der ersten Anmeldung. Das Demo-Konto wird in Produktion nicht angelegt.
+Ändere das Passwort nach der ersten Anmeldung. Das Demo-Konto wird weder in Produktion noch in einer Neon-Datenbank angelegt. Für Neon muss ein Superadmin ausdrücklich über `ADMIN_USERNAME` und `ADMIN_PASSWORD` (mindestens 12 Zeichen) eingerichtet werden.
 Nach dem Login findest du **Admin** in der oberen Navigation oder im Profilmenü. Dort kannst du Benutzer, Rollen, Tickets, News, Aktivitäten und Systemeinstellungen verwalten. Direkt unter den Dashboard-Statistiken befindet sich der **Wartungsmodus**-Schalter; nur Superadmins sehen und verwenden ihn. Die Aktivierung sperrt normale Nutzer aus, beendet aber nicht den Serverprozess. Vor dem Umschalten erscheint eine Bestätigung, und Änderungen werden protokolliert.
 In der Benutzerverwaltung kannst du Konten suchen und die komplette Liste einschließlich Roblox- und Dienstnummern-Daten als CSV exportieren. Der Export ist nur angemeldeten Admins zugänglich; Tabellenkalkulations-Formeln in exportierten Feldern werden entschärft. **Aktualisieren** lädt Dashboard und Spielstatus neu.
 
 #### Eigenes Konto zum Admin machen
 
 1. Erstelle zuerst ein normales Konto mit deinem Benutzernamen und Passwort.
-2. Melde dich anschließend mit dem lokalen Superadmin (`admin@rlp-rp.local`) an und öffne **Admin → Benutzerverwaltung**.
+2. Melde dich anschließend mit dem lokalen SQLite-Superadmin (`admin@rlp-rp.local`) an und öffne **Admin → Benutzerverwaltung**. Für Neon müssen stattdessen eigene Admin-Zugangsdaten als Umgebungsvariablen gesetzt sein.
 3. Suche dein Konto und stelle in der Spalte **Rolle** `ADMIN` ein.
 4. Melde dich ab und wieder mit deinem eigenen Konto an. Der Admin-Link erscheint nun in der Navigation.
 
@@ -102,9 +114,9 @@ Setze mindestens ein eigenes JWT-Geheimnis und eigene Admin-Zugangsdaten. Beispi
 ```powershell
 $env:NODE_ENV = "production"
 $env:JWT_SECRET = "hier-ein-eigenes-zufaelliges-geheimnis-mit-mindestens-32-zeichen-eintragen"
-$env:ADMIN_EMAIL = "admin@deine-domain.de"
-$env:ADMIN_PASSWORD = "ein-sicheres-einmaliges-passwort"
 $env:ADMIN_USERNAME = "RLPAdmin"
+$env:ADMIN_PASSWORD = "ein-sicheres-einmaliges-passwort"
+$env:ADMIN_EMAIL = "admin@deine-domain.de"
 $env:PORT = "3000"
 npm start
 ```
@@ -115,19 +127,21 @@ Wichtige Umgebungsvariablen:
 | --- | --- |
 | `JWT_SECRET` | Signaturschlüssel; in Produktion mindestens 32 Zeichen, geheim halten |
 | `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `ADMIN_USERNAME` | Erstmaliger Superadmin, falls noch kein Admin existiert |
+| `DATABASE_URL` | Gepoolte PostgreSQL-Verbindung für App-Abfragen |
+| `DATABASE_URL_UNPOOLED` | Direkte PostgreSQL-Verbindung für Schemainitialisierung |
 | `SMTP_URL` | SMTP-Verbindungs-URL für Passwort-Reset-, Sicherheits- und Dienst-E-Mails |
 | `MAIL_FROM` | Verifizierte Absenderadresse für E-Mails (in Produktion erforderlich, wenn SMTP genutzt wird) |
-
-### Kostenloses Online-Hosting
-
-Der GitHub-Actions-Workflow führt bei Pushes auf `main` den Konto-/Datenbanktest aus und veröffentlicht danach die Dateien aus `public` als **statische Design-Vorschau** auf [GitHub Pages](https://tulixpro.github.io/notrufHamburgTulix/). Die Vorschau zeigt deutlich an, dass Anmeldung, Registrierung, Tickets und Admin-Funktionen dort deaktiviert sind. Wenn GitHub Pages noch die Repository-Dateien direkt veröffentlicht, leitet die `index.html` im Repository-Stamm zum Design unter `public/` weiter.
-
-GitHub Pages führt diesen Express-Server nicht aus. Die vollständige Website benötigt weiterhin einen Backend-Host und eine gehostete Datenbank; die lokale SQLite-Datei wird nicht in die Vorschau hochgeladen.
 | `PUBLIC_URL` | Öffentliche HTTPS-Basisadresse (z. B. `https://portal.de`) für Reset-Links in Produktion |
 | `ROBLOX_PLACE_ID` | Place-ID des RLP-RP-Spiels; erstellt den direkten Spiel-Link |
 | `ROBLOX_UNIVERSE_ID` | Universe-ID für die Live-Abfrage von Spielstatus und Spielerzahlen |
 | `PORT` | HTTP-Port (Standard: `3000`) |
 | `TRUST_PROXY=true` | Nur setzen, wenn die App hinter genau einem vertrauenswürdigen Reverse Proxy läuft |
+
+### Kostenloses Online-Hosting
+
+Der GitHub-Actions-Workflow führt bei Pushes auf `main` den Konto-/Datenbanktest aus und veröffentlicht danach die Dateien aus `public` als **statische Design-Vorschau** auf [GitHub Pages](https://tulixpro.github.io/notrufHamburgTulix/). Die Vorschau zeigt deutlich an, dass Anmeldung, Registrierung, Tickets und Admin-Funktionen dort deaktiviert sind. Wenn GitHub Pages noch die Repository-Dateien direkt veröffentlicht, leitet die `index.html` im Repository-Stamm zum Design unter `public/` weiter.
+
+GitHub Pages führt diesen Express-Server nicht aus. Die vollständige Website benötigt weiterhin einen Backend-Host und eine gehostete Datenbank; die lokale SQLite-Datei wird nicht in die Vorschau hochgeladen. Neon stellt die Datenbank bereit, aber nicht automatisch einen öffentlich erreichbaren Express-Host.
 
 Für den Passwort-Reset muss im Produktivbetrieb ein SMTP-Server konfiguriert sein, zum Beispiel über `SMTP_URL`. Ohne SMTP werden Reset-Links nur im Entwicklungsmodus im Server-Terminal ausgegeben. Der Link läuft nach 30 Minuten ab. Die Web-App sollte in Produktion ausschließlich über HTTPS erreichbar sein.
 
@@ -168,6 +182,8 @@ Für den Passwort-Reset muss im Produktivbetrieb ein SMTP-Server konfiguriert se
 │   └── styles.css
 ├── data/                 # wird beim Start erzeugt, nicht einchecken
 ├── server.js
+├── database.js
+├── schema.js
 ├── package.json
 └── README.md
 ```
