@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080d16">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="RLP RP – dein nächstes Kapitel beginnt in unserem deutschen Roblox-Rollenspiel. Entdecke die Community, verifiziere dein Roblox-Konto und starte deine Geschichte.">
+  <title>RLP RP — Roblox Roleplay</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="RLP RP Startseite">
+      <img class="brand-mark" src="/icon.svg" alt="">
+      <span class="brand-name">RLP <b>RP</b><small>ROBLOX ROLEPLAY</small></span>
+    </a>
+    <button class="mobile-menu" id="mobile-menu" aria-label="Navigation öffnen" aria-expanded="false"><span></span><span></span></button>
+    <nav class="main-nav" id="main-nav">
+      <a href="#home" class="nav-link active" data-page="home">Startseite</a>
+      <a href="#info" class="nav-link" data-page="info">Über uns</a>
+      <a href="#news" class="nav-link" data-page="news">Neuigkeiten</a>
+      <a href="#tickets" class="nav-link auth-nav hidden" data-page="tickets">Support</a>
+      <a href="#admin" class="nav-link admin-nav hidden" data-page="admin">Admin</a>
+    </nav>
+    <div class="header-actions">
+      <a class="discord-link" href="https://discord.gg/" target="_blank" rel="noreferrer"><span class="discord-icon">◈</span><span>Discord</span><span class="online-dot"></span></a>
+      <button class="button button-outline" id="account-button">Anmelden <span class="arrow">↗</span></button>
+      <div class="user-menu hidden" id="user-menu">
+        <button class="user-chip" id="profile-button"><span class="avatar-small"><span id="user-avatar-letter">R</span><img class="avatar-image hidden" id="user-avatar-image" alt=""></span><span id="user-name">Profil</span><span class="chevron">⌄</span></button>
+        <div class="user-dropdown hidden" id="user-dropdown"><a href="#profile" data-page="profile">Mein Profil</a><a href="#admin" class="admin-nav hidden" data-page="admin">Admin-Dashboard</a><button id="logout-button">Abmelden</button></div>
+      </div>
+    </div>
+  </header>
+
+  <aside class="announcement-bar hidden" id="announcement-bar" aria-live="polite"><span class="announcement-mark">✦</span><p id="announcement-text"></p><button id="dismiss-announcement" type="button" aria-label="Hinweis schließen">×</button></aside>
+  <main>
+    <section class="page active" id="page-home">
+      <div class="hero wrap">
+        <div class="hero-copy">
+          <div class="eyebrow"><span class="eyebrow-line"></span> DEIN ROBLOX-SPIEL. DEINE GESCHICHTE.</div>
+          <h1>Ein neues Leben.<br><span>Eine Stadt.</span> Deine Story.</h1>
+          <p class="hero-subtitle">Willkommen bei RLP RP – unserem deutschen Rollenspiel auf Roblox. Verifiziere dein Roblox-Konto, tritt der Community bei und schreib deine eigene Geschichte.</p>
+          <div class="hero-actions">
+            <a href="https://www.roblox.com/games/" class="button button-primary" id="game-link" target="_blank" rel="noreferrer">Auf Roblox spielen <span class="button-arrow">↗</span></a>
+            <a href="#info" class="button button-quiet" data-page="info"><span class="play-icon">▶</span> Mehr erfahren</a>
+            <button class="button button-outline" id="install-app-home" type="button">Als App installieren ↓</button>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat"><span class="stat-indicator"></span><strong id="server-status">Spielstatus</strong><small>ROBLOX-SPIEL</small></div>
+            <span class="stat-divider"></span>
+            <div class="hero-stat"><strong><span id="players-online">—</span><i> / </i><span id="players-capacity">128</span></strong><small>SPIELER ONLINE</small></div>
+            <span class="stat-divider"></span>
+            <div class="hero-stat"><strong>24/7</strong><small>FÜR DICH DA</small></div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="visual-glow"></div>
+          <div class="city-card">
+            <div class="city-skyline">
+              <div class="tower tower-a"></div><div class="tower tower-b"></div><div class="tower tower-c"></div><div class="tower tower-d"></div><div class="tower tower-e"></div>
+              <div class="city-moon"></div>
+              <div class="city-haze"></div>
+            </div>
+            <div class="city-overlay"></div>
+            <div class="city-label"><span>53° 33' N &nbsp; 9° 59' E</span><b>HAMBURG</b><small>Hier beginnt deine Geschichte.</small></div>
+            <div class="city-tag"><span class="live-pulse"></span> RLP RP · ROBLOX</div>
+          </div>
+          <div class="floating-note note-top"><span class="note-icon">✦</span><span><b>Deine Story.</b><small>Dein Moment.</small></span></div>
+          <div class="floating-note note-bottom"><span class="note-avatar">RP</span><span><b>Eine Community</b><small>mit Herz & Charakter</small></span><span class="note-online">●</span></div>
+        </div>
+      </div>
+      <section class="section wrap intro-section">
+        <div class="section-heading">
+          <div><span class="eyebrow">MEHR ALS NUR EIN SPIEL</span><h2>Dein Platz in <span>RLP RP.</span></h2></div>
+          <p>Wir schaffen Raum für Geschichten, die du selbst schreiben willst. Mit Liebe zum Detail und einer Community, die zusammenhält.</p>
+        </div>
+        <div class="feature-grid">
+          <article class="feature-card"><div class="feature-icon icon-blue">⌖</div><span class="card-kicker">01 — DIE STADT</span><h3>Hamburg wird lebendig</h3><p>Erkunde eine detailreiche Welt voller Orte, Begegnungen und Möglichkeiten. Vom Hafen bis in die Innenstadt.</p><span class="card-decoration">01</span></article>
+          <article class="feature-card"><div class="feature-icon icon-red">✳</div><span class="card-kicker">02 — DEINE STORY</span><h3>Du schreibst das Drehbuch</h3><p>Starte neu, verfolge deine Ziele und lass deinen Charakter wachsen. Hier gibt es kein vorgegebenes Ende.</p><span class="card-decoration">02</span></article>
+          <article class="feature-card"><div class="feature-icon icon-gold">♡</div><span class="card-kicker">03 — DIE COMMUNITY</span><h3>Gemeinsam besser</h3><p>Ein engagiertes Team und eine offene Community sorgen dafür, dass du dich von Anfang an willkommen fühlst.</p><span class="card-decoration">03</span></article>
+        </div>
+      </section>
+      <section class="community-banner wrap">
+        <div class="banner-orb"></div><div class="banner-content"><span class="eyebrow">WIR FREUEN UNS AUF DICH</span><h2>Deine nächste Geschichte<br>beginnt mit einem Klick.</h2><p>Triff uns auf Discord, lerne die Community kennen und mach den ersten Schritt nach Hamburg.</p><a class="button button-primary" href="https://discord.gg/" target="_blank" rel="noreferrer">Zum Discord <span class="button-arrow">↗</span></a></div>
+        <div class="banner-emblem">R<span>·</span>RP</div>
+      </section>
+    </section>
+
+    <section class="page wrap content-page" id="page-info">
+      <div class="page-heading"><span class="eyebrow">LERNE UNS KENNEN</span><h1>Willkommen bei <span>RLP RP.</span></h1><p>Unser deutsches Roblox-Rollenspiel: viele Geschichten – und eine Community, die sie gemeinsam schreibt.</p></div>
+      <div class="info-grid">
+        <article class="panel info-main"><span class="panel-icon">⌖</span><span class="eyebrow">UNSER ROBLOX-SPIEL</span><h2>Roleplay mit Raum für deine Ideen.</h2><p>RLP RP ist unser deutsches Rollenspiel auf Roblox. Unser Fokus liegt auf respektvollem, kreativem und immersivem Miteinander. Ob du gerade erst ankommst oder schon deinen eigenen Weg gehst – bei uns ist Platz für deine Geschichte.</p><div class="info-chips"><span>🎮 Roblox</span><span>🇩🇪 Deutsch</span><span>🎭 Roleplay</span><span>🤝 Community</span></div><a class="button button-primary game-link-inline" id="info-game-link" href="https://www.roblox.com/games/" target="_blank" rel="noreferrer">Spiel auf Roblox öffnen ↗</a></article>
+        <article class="panel"><span class="eyebrow">HÄUFIGE FRAGEN</span><h2 class="panel-title">Gut zu wissen</h2><details><summary>Wie kann ich dem Server beitreten?</summary><p>Komm zuerst auf unseren Discord. Dort findest du aktuelle Informationen zum Einstieg und den Serverzugang.</p></details><details><summary>Gibt es ein Mindestalter?</summary><p>Bitte beachte die jeweils aktuellen Voraussetzungen und Regeln auf unserem Discord.</p></details><details><summary>Wie erreiche ich den Support?</summary><p>Erstelle nach der Anmeldung hier im Portal ein Support-Ticket oder melde dich auf Discord.</p></details><details><summary>Wo finde ich das Regelwerk?</summary><p>Das aktuelle Regelwerk wird auf unserem Discord veröffentlicht. Lies es bitte vor deinem ersten Einstieg.</p></details></article>
+      </div>
+      <div class="section-heading team-heading"><div><span class="eyebrow">DIE MENSCHEN DAHINTER</span><h2>Unser <span>Team.</span></h2></div><p>Mit Herzblut für die Community – und immer an deiner Seite.</p></div>
+      <div class="team-grid">
+        <article class="team-card"><div class="team-avatar avatar-owner">RL</div><span class="role-pill role-lead">PROJEKTLEITUNG</span><h3>RLP Leitung</h3><p>Vision & Community</p></article>
+        <article class="team-card"><div class="team-avatar avatar-admin">AD</div><span class="role-pill role-admin">ADMINISTRATION</span><h3>Admin-Team</h3><p>Ordnung & Entwicklung</p></article>
+        <article class="team-card"><div class="team-avatar avatar-support">SU</div><span class="role-pill role-support">SUPPORT</span><h3>Support-Team</h3><p>Hilfe, wenn du sie brauchst</p></article>
+        <article class="team-card"><div class="team-avatar avatar-community">CO</div><span class="role-pill role-community">COMMUNITY</span><h3>Du fehlst noch</h3><p>Werde Teil der Geschichte</p></article>
+      </div>
+      <div class="rules-callout"><span class="callout-symbol">✦</span><div><h3>Respekt ist unser Fundament.</h3><p>Unser Regelwerk sorgt dafür, dass sich alle wohlfühlen können. Informiere dich vor deinem Einstieg auf unserem Discord.</p></div><a href="https://discord.gg/" target="_blank" rel="noreferrer">Regeln ansehen <span>↗</span></a></div>
+    </section>
+
+    <section class="page wrap content-page" id="page-news">
+      <div class="page-heading"><span class="eyebrow">DAS PASSIERT BEI UNS</span><h1>Neuigkeiten & <span>Updates.</span></h1><p>Was bei RLP RP passiert, erfährst du hier zuerst.</p></div>
+      <div class="news-grid" id="news-grid"></div>
+      <div class="empty-state hidden" id="news-empty"><span>✦</span><h3>Hier ist es gerade ruhig.</h3><p>Neue Neuigkeiten erscheinen bald.</p></div>
+    </section>
+
+    <section class="page wrap content-page" id="page-auth">
+      <div class="auth-layout">
+        <div class="auth-aside"><span class="eyebrow">SCHÖN, DASS DU DA BIST</span><h1>Deine Story<br>geht <span>weiter.</span></h1><p>Melde dich an, verwalte deine Tickets und bleib mit RLP RP verbunden.</p><div class="auth-mini-card"><span class="mini-mark">R·</span><span><b>RLP RP Portal</b><small>Dein Zuhause außerhalb des Servers.</small></span></div></div>
+        <div class="panel auth-panel">
+          <div class="auth-tabs"><button class="auth-tab active" data-auth="login">Anmelden</button><button class="auth-tab" data-auth="register">Konto erstellen</button></div>
+          <form id="login-form" class="auth-form"><h2>Willkommen zurück.</h2><p>Schön, dich wiederzusehen.</p><label for="login-email">E-Mail-Adresse</label><input id="login-email" type="email" autocomplete="email" placeholder="du@beispiel.de" required><label for="login-password">Passwort</label><input id="login-password" type="password" autocomplete="current-password" placeholder="Dein Passwort" required><button class="text-button forgot-button" type="button" id="forgot-button">Passwort vergessen?</button><button class="button button-primary form-submit" type="submit">Anmelden <span>→</span></button></form>
+          <form id="register-form" class="auth-form hidden"><h2>Finde deinen Platz.</h2><p>Erstelle dein RLP RP Konto.</p><label for="register-name">Benutzername</label><input id="register-name" autocomplete="username" minlength="3" maxlength="24" placeholder="Dein Name" required><label for="register-email">E-Mail-Adresse</label><input id="register-email" type="email" autocomplete="email" placeholder="du@beispiel.de" required><label for="register-password">Passwort <small>(mind. 12 Zeichen)</small></label><input id="register-password" type="password" autocomplete="new-password" minlength="12" placeholder="Mindestens 12 Zeichen" required><button class="button button-primary form-submit" type="submit">Konto erstellen <span>→</span></button></form>
+          <form id="forgot-form" class="auth-form hidden"><button class="text-button back-login" type="button">← Zurück zur Anmeldung</button><h2>Passwort zurücksetzen.</h2><p>Wir senden dir einen Link, falls ein Konto zu dieser Adresse existiert.</p><label for="forgot-email">E-Mail-Adresse</label><input id="forgot-email" type="email" required placeholder="du@beispiel.de"><button class="button button-primary form-submit" type="submit">Link anfordern <span>→</span></button></form>
+          <form id="reset-form" class="auth-form hidden"><h2>Neues Passwort.</h2><p>Lege ein neues Passwort für dein Konto fest.</p><label for="reset-password">Neues Passwort <small>(mind. 12 Zeichen)</small></label><input id="reset-password" type="password" minlength="12" required><button class="button button-primary form-submit" type="submit">Passwort speichern <span>→</span></button></form>
+          <div class="form-message hidden" id="auth-message" role="status"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page wrap content-page" id="page-profile">
+      <div class="page-heading"><span class="eyebrow">DEIN BEREICH</span><h1>Dein <span>Profil.</span></h1><p>Verwalte deine Informationen und behalte den Überblick.</p></div>
+      <div class="profile-layout"><div class="panel profile-card"><div class="profile-avatar"><span id="profile-avatar-letter">R</span><img class="avatar-image profile-avatar-image hidden" id="profile-avatar-image" alt=""></div><h2 id="profile-heading">Dein Profil</h2><span class="role-pill" id="profile-role">MITGLIED</span><p id="profile-email"></p><span class="muted" id="profile-since"></span><a class="roblox-profile-link hidden" id="verified-roblox-link" href="#" target="_blank" rel="noreferrer">Roblox-Profil öffnen ↗</a><a class="button button-outline profile-admin-link hidden" id="profile-admin-link" href="#admin" data-page="admin">Admin-Dashboard öffnen <span>→</span></a></div>
+        <div class="panel profile-edit"><span class="eyebrow">KONTOEINSTELLUNGEN</span><h2>Profil bearbeiten</h2><form id="profile-form" class="auth-form"><label for="profile-name">Benutzername</label><input id="profile-name" required minlength="3" maxlength="24"><label for="profile-image">Profilbild-URL <small>(optional, HTTPS)</small></label><input id="profile-image" type="url" placeholder="https://…"><button class="button button-primary form-submit" type="submit">Änderungen speichern <span>→</span></button></form><div class="form-message hidden" id="profile-message" role="status"></div><details class="password-change"><summary>Passwort sicher ändern</summary><form id="password-change-form" class="auth-form"><label for="current-password">Aktuelles Passwort</label><input id="current-password" type="password" autocomplete="current-password" required><label for="new-password">Neues Passwort <small>(mindestens 14 Zeichen)</small></label><input id="new-password" type="password" autocomplete="new-password" minlength="14" required><button class="button button-outline form-submit" type="submit">Passwort ändern <span>→</span></button></form><div class="form-message hidden" id="password-change-message" role="status"></div></details></div>
+        <div class="panel department-panel"><span class="eyebrow">DEIN DIENST · ROLEPLAY</span><h2>Wähle deine Abteilung</h2><p class="department-copy">Bewirb dich für Polizei, Feuerwehr oder Rettungsdienst. Deine fiktive RP-Dienstnummer wird automatisch erstellt; das Team schaltet die Bewerbung frei.</p><div class="department-assignment hidden" id="department-assignment"></div><form class="auth-form" id="department-form"><label for="department-select">Wunschabteilung</label><select id="department-select" required><option value="">Abteilung auswählen …</option><option value="police">Polizei</option><option value="fire">Feuerwehr</option><option value="ems">Rettungsdienst</option></select><button class="button button-primary form-submit" type="submit">Bewerbung senden <span>→</span></button></form><div class="form-message hidden" id="department-message" role="status"></div></div>
+        <div class="panel roblox-verification-panel"><div class="verification-heading"><div><span class="eyebrow">KONTO-SICHERHEIT</span><h2>Roblox-Konto verifizieren</h2></div><span class="verification-status" id="verification-status">Noch nicht verifiziert</span></div><p class="verification-copy">Damit dein RLP-RP-Konto wirklich dir gehört, gleichen wir einen einmaligen Code mit deiner öffentlichen Roblox-Profilbeschreibung ab. Wir fragen niemals dein Roblox-Passwort ab.</p><ol class="verification-steps" id="verification-steps"><li>Gib deinen Roblox-Benutzernamen ein und erstelle einen Prüfcode.</li><li>Öffne dein Profil und bearbeite die Profilbeschreibung („About“).</li><li>Füge den Code ein, speichere die Beschreibung und kehre hierher zurück.</li><li>Wähle „Profil prüfen“. Danach kannst du den Code wieder entfernen.</li></ol><form id="roblox-verify-form" class="auth-form verification-form"><label for="roblox-username">Dein Roblox-Benutzername</label><input id="roblox-username" autocomplete="off" minlength="3" maxlength="20" placeholder="z. B. MeinRobloxName" required><button class="button button-primary form-submit" type="submit">Prüfcode erstellen <span>→</span></button></form><div class="verification-challenge hidden" id="verification-challenge"><p>Füge diesen Code in die Roblox-Profilbeschreibung („About“) ein:</p><code id="roblox-verification-code"></code><button class="button button-outline copy-verification-code" id="copy-verification-code" type="button">Code kopieren</button><a id="roblox-verification-profile" href="#" target="_blank" rel="noreferrer">Roblox-Profil öffnen ↗</a><p class="verification-expiry" id="verification-expiry">Der Code ist 15 Minuten gültig.</p><button class="button button-primary" id="confirm-roblox-verification" type="button">Profil prüfen <span>✓</span></button></div><div class="form-message hidden" id="roblox-verification-message" role="status"></div></div>
+      </div>
+    </section>
+
+    <section class="page wrap content-page" id="page-tickets">
+      <div class="page-heading"><span class="eyebrow">WIR SIND FÜR DICH DA</span><h1>Dein <span>Support.</span></h1><p>Erstelle ein Ticket – unser Team kümmert sich darum.</p></div>
+      <div class="panel verification-required hidden" id="ticket-verification-required"><span class="panel-icon">◈</span><span class="eyebrow">EIN SCHRITT NOCH</span><h2>Verifiziere dein Roblox-Konto.</h2><p>Zum Erstellen und Verwalten von Support-Tickets muss dein Roblox-Konto mit deinem RLP-RP-Konto verknüpft sein.</p><a class="button button-primary" href="#profile" data-page="profile">Roblox-Konto verifizieren <span>→</span></a></div>
+      <div class="tickets-layout" id="tickets-content"><div class="panel new-ticket-panel"><span class="eyebrow">NEUES ANLIEGEN</span><h2>Wie können wir helfen?</h2><form id="ticket-form" class="auth-form"><label for="ticket-category">Kategorie</label><select id="ticket-category" required><option>Allgemeine Fragen</option><option>Support</option><option>Beschwerden</option><option>Bewerbungen</option><option>Entbannungsanträge</option></select><label for="ticket-title">Betreff</label><input id="ticket-title" required minlength="4" maxlength="100" placeholder="Worum geht es?"><label for="ticket-body">Deine Nachricht</label><textarea id="ticket-body" rows="5" required minlength="10" maxlength="3000" placeholder="Beschreibe dein Anliegen so genau wie möglich…"></textarea><button class="button button-primary form-submit" type="submit">Ticket erstellen <span>→</span></button></form><div class="form-message hidden" id="ticket-message"></div></div><div class="ticket-list-area"><div class="list-heading"><div><span class="eyebrow">DEINE ANLIEGEN</span><h2 id="ticket-list-title">Meine Tickets</h2></div><span class="count-pill" id="ticket-count">0</span></div><div class="ticket-list" id="ticket-list"></div></div></div>
+    </section>
+
+    <section class="page wrap content-page" id="page-admin">
+      <div class="page-heading admin-page-heading"><div><span class="eyebrow">GESCHÜTZTER BEREICH</span><h1>Admin <span>Dashboard.</span></h1><p>Community im Blick. Alles an einem Ort.</p></div><div class="admin-heading-actions"><button class="button button-outline" id="admin-refresh-button" type="button">Aktualisieren ↻</button><span class="admin-badge">✦ ADMIN</span></div></div>
+      <div class="dashboard-stats" id="dashboard-stats"></div>
+      <section class="emergency-panel hidden" id="emergency-panel"><div class="emergency-symbol">!</div><div class="maintenance-copy"><span class="eyebrow">NUR SUPERADMIN</span><h2>Wartungsmodus</h2><p>Normale Nutzer können die Website während der Wartung nicht nutzen. Administratoren behalten Zugriff; der Serverprozess wird nicht heruntergefahren.</p><span class="maintenance-state" id="maintenance-state"></span></div><button class="button button-danger" id="emergency-button">Wartungsmodus aktivieren <span>⏻</span></button></section>
+      <section class="panel admin-section admin-settings"><div class="list-heading"><div><span class="eyebrow">PORTAL-KONFIGURATION</span><h2>Website-Einstellungen</h2></div><span class="admin-settings-access hidden" id="settings-access-note">Nur Superadmins können speichern</span></div><p class="settings-description">Passe den Spieleinstieg, Discord-Link und den Hinweis auf der Startseite an. Änderungen werden sofort für Besucher übernommen.</p><form id="settings-form" class="settings-form"><label for="settings-discord">Discord-Einladung</label><input id="settings-discord" type="url" placeholder="https://discord.gg/dein-code"><label for="settings-place-id">Roblox Place-ID</label><input id="settings-place-id" inputmode="numeric" placeholder="z. B. 1234567890"><label for="settings-universe-id">Roblox Universe-ID <small>(für Live-Spielstatus)</small></label><input id="settings-universe-id" inputmode="numeric" placeholder="z. B. 1234567890"><label for="settings-announcement">Startseiten-Hinweis <small>(optional, max. 220 Zeichen)</small></label><input id="settings-announcement" maxlength="220" placeholder="Neuigkeiten für alle Besucher …"><button class="button button-primary form-submit" id="save-settings-button" type="submit">Einstellungen speichern <span>→</span></button></form><div class="form-message hidden" id="settings-message" role="status"></div></section>
+      <div class="admin-grid"><section class="panel admin-section"><div class="list-heading"><div><span class="eyebrow">COMMUNITY</span><h2>Benutzerverwaltung</h2></div></div><div class="user-admin-tools"><label class="sr-only" for="user-search">Benutzer suchen</label><input id="user-search" type="search" placeholder="Name, E-Mail, Roblox oder Rolle …"><button class="button button-outline" id="export-users-button" type="button">CSV exportieren ↓</button></div><p class="user-search-count" id="user-search-count" aria-live="polite"></p><details class="admin-guide"><summary>Wie mache ich mein Konto zum Admin?</summary><ol><li>Erstelle zuerst dein eigenes Portal-Konto und melde dich einmal an.</li><li>Melde dich danach mit dem Superadmin-Konto an und öffne dieses Dashboard.</li><li>Suche dein Konto in der Benutzerverwaltung und wähle bei „Rolle“ <b>ADMIN</b>.</li><li>Melde dich ab und mit deinem eigenen Konto wieder an. Der Admin-Bereich ist dann in der Navigation sichtbar.</li></ol><p>Nur Superadmins dürfen Rollen vergeben. Behalte mindestens ein sicheres Superadmin-Konto; teile Demo-Zugangsdaten niemals öffentlich.</p></details><div class="table-wrap"><table><thead><tr><th>Mitglied</th><th>E-Mail</th><th>Roblox-Konto</th><th>Rolle</th><th>Seit</th></tr></thead><tbody id="users-table"></tbody></table></div></section>
+      <section class="panel admin-section"><div class="list-heading"><div><span class="eyebrow">ROLLENSPIEL-DIENST</span><h2>Abteilungsbewerbungen</h2></div><span class="count-pill" id="department-pending-count">0</span></div><div class="department-admin-list" id="department-admin-list"></div></section>
+        <section class="panel admin-section"><div class="list-heading"><div><span class="eyebrow">NEUE BEITRÄGE</span><h2>News veröffentlichen</h2></div></div><form id="news-form" class="auth-form admin-news-form"><label for="news-title">Titel</label><input id="news-title" maxlength="120" required><label for="news-image">Bild-URL <small>(optional, HTTPS)</small></label><input id="news-image" type="url" placeholder="https://…"><label for="news-body">Inhalt</label><textarea id="news-body" rows="4" required minlength="10" maxlength="5000"></textarea><button class="button button-primary form-submit" type="submit">Veröffentlichen <span>→</span></button></form><div class="form-message hidden" id="admin-news-message"></div><div class="managed-news" id="managed-news"></div></section>
+        <section class="panel admin-section admin-tickets"><div class="list-heading"><div><span class="eyebrow">COMMUNITY-SUPPORT</span><h2>Ticketverwaltung</h2></div></div><div class="ticket-list" id="admin-ticket-list"></div></section>
+        <section class="panel admin-section"><div class="list-heading"><div><span class="eyebrow">AKTIVITÄTEN</span><h2>Letzte Aktionen</h2></div></div><div class="activity-list" id="activity-list"></div></section></div>
+      <section class="panel security-alerts-panel" id="security-alerts-panel"><div class="list-heading"><div><span class="eyebrow">SICHERHEIT</span><h2>Aktuelle Meldungen</h2><small id="security-email-state" class="security-email-state"></small></div><span class="count-pill" id="security-alert-count">0</span></div><div class="security-alert-list" id="security-alert-list"></div></section>
+      <section class="panel debug-panel hidden" id="debug-panel"><div class="debug-heading"><div><span class="eyebrow">NUR LOKAL / ENTWICKLUNG</span><h2>JavaScript Debug-Terminal</h2><p>Sichere Diagnosebefehle für Status, Konto und aktuelle Seite. Freie JavaScript-Ausführung ist deaktiviert.</p></div><span class="debug-indicator"><i></i> DEV</span></div><div class="debug-terminal" role="log" aria-live="polite" id="debug-output"><div class="debug-line debug-muted">RLP RP Diagnose-Konsole · `help` zeigt verfügbare Befehle.</div></div><form class="debug-command" id="debug-form"><label for="debug-input">rlp <span>›</span></label><input id="debug-input" type="text" autocomplete="off" spellcheck="false" placeholder="help" aria-label="Debug-Befehl"><button type="submit" class="button button-outline">Ausführen</button></form></section>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="wrap footer-top"><a class="brand" href="#home"><img class="brand-mark" src="/icon.svg" alt=""><span class="brand-name">RLP <b>RP</b><small>ROBLOX ROLEPLAY</small></span></a><p>Deine Geschichte. Deine Roblox-Welt.</p><div class="footer-actions"><a href="https://discord.gg/" target="_blank" rel="noreferrer">Discord Community ↗</a><button class="text-button" id="app-install-button" type="button">Als App installieren ↓</button></div></div><div class="wrap footer-bottom"><span>© <span id="year"></span> RLP RP. Mit Herz auf Roblox.</span><span>Ein Ort für gute Geschichten.</span></div></footer>
+  <div class="toast-region" id="toast-region" aria-live="polite"></div>
+  <button class="easter-egg-toggle hidden" id="easter-egg-toggle" type="button" aria-pressed="false">✦ Nachtmodus freigeschaltet</button>
+  <dialog class="install-dialog" id="install-dialog"><div class="dialog-heading"><div><span class="eyebrow">RLP RP ÜBERALL</span><h2>App installieren</h2></div><button class="close-dialog" id="close-install-dialog" aria-label="Schließen">×</button></div><p>Wähle dein Gerät. Die App wird direkt aus dem Browser installiert – ohne unbekannte EXE- oder APK-Dateien.</p><div class="install-options"><button class="button button-outline" type="button" data-install-platform="android">Android</button><button class="button button-outline" type="button" data-install-platform="windows">Windows 10 / 11</button></div><div class="install-help hidden" id="install-help" role="status"></div></dialog>
+  <dialog class="ticket-dialog" id="ticket-dialog"><div class="dialog-heading"><div><span class="eyebrow">TICKETVERLAUF</span><h2 id="dialog-ticket-title">Ticket</h2></div><button class="close-dialog" id="close-ticket-dialog" aria-label="Schließen">×</button></div><div class="dialog-messages" id="dialog-messages"></div><form id="reply-form" class="reply-form"><textarea id="reply-body" rows="2" placeholder="Deine Antwort…" required maxlength="3000"></textarea><button class="button button-primary" type="submit">Senden <span>→</span></button></form><button class="text-button close-ticket-action" id="close-ticket-action">Ticket schließen</button></dialog>
+</body>
+</html>

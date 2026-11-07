@@ -1,0 +1,25 @@
+{
+  "name": "rlp-rp-portal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Community- und Supportportal für RLP RP",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": "22.x"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^11.8.1",
+    "cookie-parser": "^1.4.7",
+    "csrf-csrf": "^4.0.3",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^6.10.0"
+  }
+}
