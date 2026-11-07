@@ -120,7 +120,7 @@ Wichtige Umgebungsvariablen:
 
 ### Kostenloses Online-Hosting
 
-Der GitHub-Actions-Workflow führt bei Pushes auf `main` den Konto-/Datenbanktest aus und veröffentlicht danach die Dateien aus `public` als **statische Design-Vorschau** auf [GitHub Pages](https://tulixpro.github.io/notrufHamburgTulix/). Aktiviere dafür im Repository unter **Settings → Pages → Build and deployment → Source** die Option **GitHub Actions**. Die Vorschau zeigt deutlich an, dass Anmeldung, Registrierung, Tickets und Admin-Funktionen dort deaktiviert sind.
+Der GitHub-Actions-Workflow führt bei Pushes auf `main` den Konto-/Datenbanktest aus und veröffentlicht danach die Dateien aus `public` als **statische Design-Vorschau** auf [GitHub Pages](https://tulixpro.github.io/notrufHamburgTulix/). Die Vorschau zeigt deutlich an, dass Anmeldung, Registrierung, Tickets und Admin-Funktionen dort deaktiviert sind. Wenn GitHub Pages noch die Repository-Dateien direkt veröffentlicht, leitet die `index.html` im Repository-Stamm zum Design unter `public/` weiter.
 
 GitHub Pages führt diesen Express-Server nicht aus. Die vollständige Website benötigt weiterhin einen Backend-Host und eine gehostete Datenbank; die lokale SQLite-Datei wird nicht in die Vorschau hochgeladen.
 | `PUBLIC_URL` | Öffentliche HTTPS-Basisadresse (z. B. `https://portal.de`) für Reset-Links in Produktion |
