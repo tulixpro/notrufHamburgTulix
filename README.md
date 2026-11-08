@@ -141,7 +141,11 @@ Wichtige Umgebungsvariablen:
 
 Der GitHub-Actions-Workflow führt bei Pushes auf `main` den Konto-/Datenbanktest aus und veröffentlicht danach die Dateien aus `public` als **statische Design-Vorschau** auf [GitHub Pages](https://tulixpro.github.io/notrufHamburgTulix/). Die Vorschau zeigt deutlich an, dass Anmeldung, Registrierung, Tickets und Admin-Funktionen dort deaktiviert sind. Wenn GitHub Pages noch die Repository-Dateien direkt veröffentlicht, leitet die `index.html` im Repository-Stamm zum Design unter `public/` weiter.
 
-GitHub Pages führt diesen Express-Server nicht aus. Die vollständige Website benötigt weiterhin einen Backend-Host und eine gehostete Datenbank; die lokale SQLite-Datei wird nicht in die Vorschau hochgeladen. Neon stellt die Datenbank bereit, aber nicht automatisch einen öffentlich erreichbaren Express-Host.
+Für den vollständigen Betrieb ist in `render.yaml` ein kostenloser Node.js-Webdienst bei Render vorbereitet. Nach dem Hochladen dieser Datei zu GitHub kannst du bei Render **New → Blueprint** wählen und das Repository `tulixpro/notrufHamburgTulix` verbinden. Der Blueprint verwendet Node.js 22, baut mit `npm ci && npm run build`, startet mit `npm start` und prüft `/api/status`. Render kann kostenlose Dienste bei Inaktivität pausieren; Tarif, Verfügbarkeit und mögliche Limits vor dem Erstellen auf der Render-Seite prüfen.
+
+Die Zugangsdaten werden beim Einrichten sicher bei Render eingetragen, niemals in Git-Dateien: `DATABASE_URL` (gepoolte Neon-Adresse), `DATABASE_URL_UNPOOLED` (direkte Neon-Adresse), `ADMIN_USERNAME` und `ADMIN_PASSWORD`. Render erzeugt `JWT_SECRET` automatisch. Die Startseite und die Funktionen für Anmeldung und Tickets laufen nach erfolgreichem Deployment über dieselbe Render-Adresse. Die lokale SQLite-Datei wird nicht übertragen; vorhandene Konten in Neon bleiben erhalten. Ein erstmaliger Superadmin wird beim Start angelegt, falls in der Datenbank noch keiner vorhanden ist.
+
+GitHub Pages führt den Express-Server nicht aus. Neon stellt die Datenbank bereit, aber nicht automatisch einen öffentlich erreichbaren Express-Host.
 
 Für den Passwort-Reset muss im Produktivbetrieb ein SMTP-Server konfiguriert sein, zum Beispiel über `SMTP_URL`. Ohne SMTP werden Reset-Links nur im Entwicklungsmodus im Server-Terminal ausgegeben. Der Link läuft nach 30 Minuten ab. Die Web-App sollte in Produktion ausschließlich über HTTPS erreichbar sein.
 
