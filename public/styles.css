@@ -163,3 +163,82 @@ body.easter-egg-mode .city-card{box-shadow:0 34px 90px #0008,0 0 90px #39c7c32b}
 .brand:hover .brand-mark{transform:rotate(-3deg) scale(1.04);filter:drop-shadow(0 5px 12px #80a9ff38)}
 @media(hover:hover) and (prefers-reduced-motion:no-preference){.feature-card:hover,.team-card:hover,.news-card:hover,.panel:hover,.dashboard-stat:hover,.ticket-item:hover{transform:translateY(-3px)}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+
+/* Winter refresh: motion, depth and festive Hamburg details */
+:root{--winter-red:#f04b59;--winter-red-soft:#ff7b83;--winter-ice:#b8d7ff}
+body:after{content:"";position:fixed;inset:-120px 0 0;z-index:9;pointer-events:none;opacity:.38;background-image:radial-gradient(2px 2px at 18px 32px,#fff 98%,transparent),radial-gradient(1.5px 1.5px at 92px 76px,#dceaff 98%,transparent),radial-gradient(2px 2px at 164px 18px,#fff 98%,transparent),radial-gradient(1px 1px at 212px 128px,#fff 98%,transparent);background-size:260px 190px;animation:snowfall-drift 18s linear infinite}
+.seasonal-lights{position:fixed;z-index:21;top:0;left:0;right:0;height:25px;pointer-events:none;opacity:.9;background:radial-gradient(ellipse at 50% -22px,transparent 0 58%,#b6a17b 59% 60%,transparent 61%),radial-gradient(circle at 5% 10px,#ffdf9b 0 3px,transparent 5px),radial-gradient(circle at 15% 12px,#f45a62 0 3px,transparent 5px),radial-gradient(circle at 25% 8px,#ffdf9b 0 3px,transparent 5px),radial-gradient(circle at 35% 13px,#6e9eff 0 3px,transparent 5px),radial-gradient(circle at 45% 8px,#ffdf9b 0 3px,transparent 5px),radial-gradient(circle at 55% 12px,#f45a62 0 3px,transparent 5px),radial-gradient(circle at 65% 8px,#ffdf9b 0 3px,transparent 5px),radial-gradient(circle at 75% 13px,#6e9eff 0 3px,transparent 5px),radial-gradient(circle at 85% 8px,#ffdf9b 0 3px,transparent 5px),radial-gradient(circle at 95% 12px,#f45a62 0 3px,transparent 5px);filter:drop-shadow(0 2px 7px #ffcf7c88);animation:lights-twinkle 3.2s ease-in-out infinite alternate}
+.brand-mark{filter:drop-shadow(0 0 10px #ed475a30)}
+.brand:hover .brand-mark{transform:rotate(-5deg) scale(1.08);filter:drop-shadow(0 0 15px #f04b5980)}
+.brand-name b{color:var(--winter-red-soft)}
+.hero .eyebrow:after{content:"✦ WINTER EDITION";margin-left:7px;padding:4px 8px;border:1px solid #f16e783d;border-radius:999px;background:#f04b5912;color:#ff9aa0;font-size:8px;letter-spacing:.12em}
+.hero-copy{animation:hero-enter .85s cubic-bezier(.2,.75,.25,1) both}
+.hero-visual{animation:hero-enter 1s .12s cubic-bezier(.2,.75,.25,1) both}
+.hero h1 span,.page-heading h1 span,.section-heading h2 span{background-image:linear-gradient(100deg,#ff9ca2 0%,#f05b68 48%,#b8d7ff 100%)}
+.button-primary{background:linear-gradient(115deg,#e83f50,#a91e35);box-shadow:0 8px 28px #d92c4540,inset 0 1px #ffffff40}
+.button-primary:hover{background:linear-gradient(115deg,#ff5867,#c52a42);box-shadow:0 12px 34px #e83f5060,0 0 0 4px #f04b5914}
+.button-primary .button-arrow,.button-primary .arrow{animation:arrow-nudge 1.8s ease-in-out infinite}
+.city-card{isolation:isolate;overflow:hidden}
+.city-card:after{content:"";position:absolute;z-index:2;inset:-30% -20%;pointer-events:none;background:linear-gradient(115deg,transparent 38%,#ff687011 47%,#ffffff16 50%,#6e9eff10 53%,transparent 62%);transform:translateX(-75%);animation:city-scan 9s ease-in-out infinite}
+.city-moon{animation:moon-glow 5s ease-in-out infinite alternate}
+.visual-glow{animation:glow-breathe 6s ease-in-out infinite alternate}
+.floating-note{animation:note-float 5s ease-in-out infinite}
+.floating-note.note-bottom{animation-delay:-2.3s}
+.feature-card,.team-card,.news-card,.panel,.admin-section,.dashboard-stat,.ticket-item{will-change:transform}
+.feature-card,.team-card,.news-card{animation:card-arrive .7s both}
+.feature-card:nth-child(2),.team-card:nth-child(2),.news-card:nth-child(2){animation-delay:.12s}
+.feature-card:nth-child(3),.team-card:nth-child(3),.news-card:nth-child(3){animation-delay:.24s}
+.feature-card:hover,.team-card:hover,.news-card:hover,.panel:hover,.dashboard-stat:hover,.ticket-item:hover{border-color:#f16e7855;box-shadow:0 22px 55px #0006,0 0 24px #ed435018}
+.community-banner{position:relative;overflow:hidden}
+.community-banner:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 20%,#ffffff0b 48%,transparent 70%);transform:translateX(-100%);animation:banner-shine 8s ease-in-out infinite}
+.banner-emblem{animation:emblem-float 6s ease-in-out infinite}
+.nav-link.active{background:#f04b5918;color:#fff}
+.nav-link:hover{color:#ffb7bc}
+.site-header{border-bottom-color:#f16e7820}
+.stat-indicator,.online-dot,.live-pulse{background:#65d9a2;box-shadow:0 0 0 0 #65d9a280;animation:status-pulse 2s infinite}
+.page.active{animation:page-enter .42s ease both}
+@keyframes snowfall-drift{0%{transform:translate3d(0,-35px,0)}100%{transform:translate3d(34px,190px,0)}}
+@keyframes lights-twinkle{0%{opacity:.55;filter:drop-shadow(0 1px 4px #ffcf7c55)}100%{opacity:1;filter:drop-shadow(0 2px 10px #ffcf7cbb)}}
+@keyframes hero-enter{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+@keyframes card-arrive{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes note-float{0%,100%{translate:0 0}50%{translate:0 -9px}}
+@keyframes glow-breathe{from{opacity:.16;scale:.94}to{opacity:.34;scale:1.06}}
+@keyframes moon-glow{from{filter:drop-shadow(0 0 8px #b7d2ff20)}to{filter:drop-shadow(0 0 22px #b7d2ff66)}}
+@keyframes city-scan{0%,30%{transform:translateX(-75%)}75%,100%{transform:translateX(75%)}}
+@keyframes banner-shine{0%,55%{transform:translateX(-100%)}85%,100%{transform:translateX(100%)}}
+@keyframes emblem-float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(2deg)}}
+@keyframes arrow-nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+@keyframes status-pulse{0%{box-shadow:0 0 0 0 #65d9a280}70%{box-shadow:0 0 0 8px #65d9a200}100%{box-shadow:0 0 0 0 #65d9a200}}
+@keyframes page-enter{from{opacity:.5;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){body:after,.seasonal-lights,.hero-copy,.hero-visual,.city-card:after,.city-moon,.visual-glow,.floating-note,.feature-card,.team-card,.news-card,.community-banner:after,.banner-emblem,.button-primary .button-arrow,.button-primary .arrow,.stat-indicator,.online-dot,.live-pulse,.page.active{animation:none!important;transition:none!important;transform:none!important;translate:none!important;opacity:1!important}}
+@media(max-width:760px){.seasonal-lights{height:18px;opacity:.65}.hero .eyebrow:after{font-size:7px}.city-card:after{animation-duration:12s}}
+
+
+/* Animated rescue scene – decorative fictional RP atmosphere */
+.city-card{perspective:900px}
+.rescue-scene{position:absolute;z-index:3;left:0;right:0;bottom:45px;height:118px;overflow:hidden;pointer-events:none}
+.road-glow{position:absolute;left:5%;right:5%;bottom:0;height:32px;border-radius:50%;background:radial-gradient(ellipse,#e8495b35,transparent 70%);filter:blur(7px)}
+.rescue-vehicle{position:absolute;left:50%;bottom:13px;width:154px;height:51px;transform:translateX(-50%);border-radius:12px 17px 7px 7px;background:linear-gradient(180deg,#f7f8fb 0 57%,#d9e2ec 58% 100%);border:1px solid #ffffffa8;box-shadow:0 8px 20px #02071199,0 0 22px #e84a5b22;animation:rescue-cruise 7s ease-in-out infinite}
+.rescue-vehicle:before{content:"";position:absolute;right:9px;top:-11px;width:58px;height:20px;border-radius:8px 10px 0 0;background:linear-gradient(145deg,#dfeaf4,#899caf);border:1px solid #ffffffa0}
+.vehicle-windshield{position:absolute;right:13px;top:-7px;width:27px;height:14px;border-radius:5px 7px 0 0;background:linear-gradient(135deg,#18324b,#6d91aa);transform:skewX(-14deg)}
+.vehicle-stripe{position:absolute;left:0;right:0;top:25px;height:8px;background:linear-gradient(90deg,#c51f38,#fa5261 50%,#b81935)}
+.vehicle-star{position:absolute;left:34px;top:19px;color:#fff;font:900 13px Arial;text-shadow:0 1px 3px #8d1025}
+.vehicle-lightbar{position:absolute;z-index:2;left:52px;top:-7px;width:42px;height:7px;border-radius:4px;background:#1c2938;border:1px solid #9eacba;display:flex;overflow:hidden}
+.vehicle-lightbar i{flex:1;background:#f33d50;animation:lightbar-flash .72s steps(2,end) infinite}
+.vehicle-lightbar i+ i{background:#4b9cff;animation-delay:.36s}
+.vehicle-wheel{position:absolute;bottom:-7px;width:20px;height:20px;border-radius:50%;background:radial-gradient(circle at center,#9eafc0 0 3px,#101a28 4px 8px,#050a11 9px);border:2px solid #202b39}
+.wheel-left{left:22px}.wheel-right{right:22px}
+.vehicle-beam{position:absolute;bottom:31px;width:120px;height:36px;opacity:0;filter:blur(7px);background:linear-gradient(90deg,#f5dca0aa,transparent);animation:headlight-pulse 2.8s ease-in-out infinite}
+.beam-left{left:calc(50% + 52px);transform:skewY(-10deg)}.beam-right{right:calc(50% + 52px);transform:scaleX(-1) skewY(-10deg);animation-delay:.15s}
+.scene-caption{position:absolute;z-index:4;right:16px;bottom:13px;padding:6px 9px;border:1px solid #ffffff24;border-radius:20px;background:#08111dc9;color:#c7d5e8;font-size:7px;letter-spacing:.13em;backdrop-filter:blur(8px)}
+.scene-caption b{color:#fa6a75;margin:0 3px}
+.scene-live-dot{display:inline-block;width:5px;height:5px;border-radius:50%;margin:0 5px 1px 0;background:#70e0a8;box-shadow:0 0 8px #70e0a8;animation:status-pulse 1.8s infinite}
+.scene-snow{position:absolute;top:0;width:3px;height:3px;border-radius:50%;background:#fff;box-shadow:0 0 8px #d8e9ff;animation:scene-snowfall 4.5s linear infinite}
+.scene-snow-one{left:24%;animation-delay:-1.2s}.scene-snow-two{left:76%;animation-delay:-3s}
+@keyframes rescue-cruise{0%,100%{translate:-50% 0;scale:.98}50%{translate:-50% -5px;scale:1.02}}
+@keyframes lightbar-flash{0%,49%{opacity:1;filter:brightness(1.6)}50%,100%{opacity:.28;filter:brightness(.7)}}
+@keyframes headlight-pulse{0%,100%{opacity:.08}45%,55%{opacity:.38}}
+@keyframes scene-snowfall{0%{translate:0 -15px;opacity:0}20%{opacity:1}100%{translate:22px 125px;opacity:0}}
+@media(max-width:560px){.rescue-vehicle{scale:.82}.scene-caption{font-size:6px;right:8px}.rescue-scene{bottom:42px}}
+@media(prefers-reduced-motion:reduce){.rescue-vehicle,.vehicle-lightbar i,.vehicle-beam,.scene-live-dot,.scene-snow{animation:none!important}}
